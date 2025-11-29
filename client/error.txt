@@ -1,0 +1,116 @@
+src/App.tsx(14,27): error TS7031: Binding element 'children' implicitly has an 'any' type.
+src/App.tsx(15,27): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/components/Layout.tsx(5,19): error TS7031: Binding element 'children' implicitly has an 'any' type.
+src/components/Layout.tsx(11,29): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/config/api.ts(2,34): error TS2339: Property 'env' does not exist on type 'ImportMeta'.
+src/hooks/useAuth.ts(21,20): error TS7006: Parameter 'userData' implicitly has an 'any' type.
+src/hooks/useAuth.ts(21,30): error TS7006: Parameter 'token' implicitly has an 'any' type.
+src/hooks/useAuth.ts(38,22): error TS7006: Parameter 'role' implicitly has an 'any' type.
+src/hooks/useAuth.ts(39,22): error TS2339: Property 'role' does not exist on type 'never'.
+src/hooks/useAuth.ts(49,26): error TS2339: Property 'role' does not exist on type 'never'.
+src/hooks/useAuth.ts(50,26): error TS2339: Property 'role' does not exist on type 'never'.
+src/hooks/useAuth.ts(51,21): error TS2339: Property 'role' does not exist on type 'never'.
+src/hooks/useAuth.ts(52,24): error TS2339: Property 'role' does not exist on type 'never'.
+src/main.tsx(6,12): error TS2345: Argument of type 'HTMLElement | null' is not assignable to parameter of type 'Container'.
+  Type 'null' is not assignable to type 'Container'.
+src/pages/Assignments.tsx(12,29): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/pages/Assignments.tsx(31,33): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/pages/Assignments.tsx(39,41): error TS18047: 'selectedAssignment' is possibly 'null'.
+src/pages/Assignments.tsx(42,28): error TS2345: Argument of type 'any[]' is not assignable to parameter of type 'SetStateAction<never[]>'.
+  Type 'any[]' is not assignable to type 'never[]'.
+    Type 'any' is not assignable to type 'never'.
+src/pages/Assignments.tsx(43,19): error TS2339: Property '_id' does not exist on type 'never'.
+src/pages/Assignments.tsx(43,27): error TS18047: 'selectedAssignment' is possibly 'null'.
+src/pages/Assignments.tsx(43,54): error TS2698: Spread types may only be created from object types.
+src/pages/Assignments.tsx(56,30): error TS7006: Parameter 'assignment' implicitly has an 'any' type.
+src/pages/Assignments.tsx(88,46): error TS2339: Property '_id' does not exist on type 'never'.
+src/pages/Assignments.tsx(92,53): error TS2339: Property 'class_id' does not exist on type 'never'.
+src/pages/Assignments.tsx(95,67): error TS2339: Property 'due_date' does not exist on type 'never'.
+src/pages/Assignments.tsx(98,98): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/Assignments.tsx(99,82): error TS2339: Property 'description' does not exist on type 'never'.
+src/pages/Assignments.tsx(103,45): error TS2339: Property 'status' does not exist on type 'never'.
+src/pages/Assignments.tsx(131,98): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/Assignments.tsx(140,72): error TS18047: 'e.target.files' is possibly 'null'.
+src/pages/Assignments.tsx(140,72): error TS2345: Argument of type 'File' is not assignable to parameter of type 'SetStateAction<null>'.
+  Type 'File' provides no match for the signature '(prevState: null): null'.
+src/pages/Assignments.tsx(146,53): error TS2339: Property 'name' does not exist on type 'never'.
+src/pages/Attendance.tsx(2,10): error TS6133: 'Calendar' is declared but its value is never read.
+src/pages/Attendance.tsx(14,31): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/pages/Courses.tsx(31,39): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/pages/Courses.tsx(35,25): error TS2322: Type 'any' is not assignable to type 'never'.
+src/pages/Courses.tsx(35,37): error TS2322: Type 'any' is not assignable to type 'never'.
+src/pages/Courses.tsx(45,16): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/Courses.tsx(98,42): error TS2339: Property '_id' does not exist on type 'never'.
+src/pages/Courses.tsx(104,45): error TS2339: Property 'institution_id' does not exist on type 'never'.
+src/pages/Courses.tsx(107,90): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/Courses.tsx(108,87): error TS2339: Property 'description' does not exist on type 'never'.
+src/pages/Courses.tsx(138,37): error TS2322: Type 'string' is not assignable to type 'number'.
+src/pages/Dashboard.tsx(6,29): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/pages/Jobs.tsx(14,29): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/pages/Jobs.tsx(32,32): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/pages/Jobs.tsx(41,33): error TS18047: 'selectedJob' is possibly 'null'.
+src/pages/Jobs.tsx(54,29): error TS7006: Parameter 'job' implicitly has an 'any' type.
+src/pages/Jobs.tsx(60,13): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/Jobs.tsx(61,13): error TS2339: Property 'description' does not exist on type 'never'.
+src/pages/Jobs.tsx(97,39): error TS2339: Property '_id' does not exist on type 'never'.
+src/pages/Jobs.tsx(102,50): error TS2339: Property 'type' does not exist on type 'never'.
+src/pages/Jobs.tsx(105,67): error TS2339: Property 'posted_at' does not exist on type 'never'.
+src/pages/Jobs.tsx(108,95): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/Jobs.tsx(110,46): error TS2339: Property 'institution_id' does not exist on type 'never'.
+src/pages/Jobs.tsx(112,97): error TS2339: Property 'description' does not exist on type 'never'.
+src/pages/Jobs.tsx(117,50): error TS2339: Property 'location' does not exist on type 'never'.
+src/pages/Jobs.tsx(121,67): error TS2339: Property 'closing_at' does not exist on type 'never'.
+src/pages/Jobs.tsx(152,43): error TS2339: Property 'title' does not exist on type 'never'.
+src/pages/Jobs.tsx(152,67): error TS2339: Property 'institution_id' does not exist on type 'never'.
+src/pages/Jobs.tsx(162,72): error TS18047: 'e.target.files' is possibly 'null'.
+src/pages/Jobs.tsx(162,72): error TS2345: Argument of type 'File' is not assignable to parameter of type 'SetStateAction<null>'.
+  Type 'File' provides no match for the signature '(prevState: null): null'.
+src/pages/Jobs.tsx(166,66): error TS2339: Property 'name' does not exist on type 'never'.
+src/pages/Jobs.tsx(175,37): error TS2322: Type 'string' is not assignable to type 'number'.
+src/pages/Login.tsx(12,33): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/pages/Login.tsx(23,22): error TS18046: 'err' is of type 'unknown'.
+src/pages/Profile.tsx(1,20): error TS6133: 'useEffect' is declared but its value is never read.
+src/pages/Profile.tsx(2,10): error TS6133: 'User' is declared but its value is never read.
+src/pages/Profile.tsx(5,18): error TS6133: 'setUser' is declared but its value is never read.
+src/pages/Profile.tsx(5,49): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/pages/Profile.tsx(123,41): error TS2322: Type 'string' is not assignable to type 'number'.
+src/pages/Register.tsx(17,33): error TS7006: Parameter 'e' implicitly has an 'any' type.
+src/pages/Register.tsx(28,22): error TS18046: 'err' is of type 'unknown'.
+src/pages/Timetable.tsx(2,10): error TS6133: 'Calendar' is declared but its value is never read.
+src/pages/Timetable.tsx(7,11): error TS6133: 'user' is declared but its value is never read.
+src/pages/Timetable.tsx(7,29): error TS2345: Argument of type 'string | null' is not assignable to parameter of type 'string'.
+  Type 'null' is not assignable to type 'string'.
+src/pages/Timetable.tsx(13,17): error TS2322: Type '{ _id: string; day: string; start_time: string; end_time: string; class_id: { name: string; }; teacher_id: { name: string; }; }' is not assignable to type 'never'.
+src/pages/Timetable.tsx(14,17): error TS2322: Type '{ _id: string; day: string; start_time: string; end_time: string; class_id: { name: string; }; teacher_id: { name: string; }; }' is not assignable to type 'never'.
+src/pages/Timetable.tsx(15,17): error TS2322: Type '{ _id: string; day: string; start_time: string; end_time: string; class_id: { name: string; }; teacher_id: { name: string; }; }' is not assignable to type 'never'.
+src/pages/Timetable.tsx(16,17): error TS2322: Type '{ _id: string; day: string; start_time: string; end_time: string; class_id: { name: string; }; teacher_id: { name: string; }; }' is not assignable to type 'never'.
+src/pages/Timetable.tsx(42,58): error TS2339: Property 'day' does not exist on type 'never'.
+src/pages/Timetable.tsx(43,55): error TS2339: Property 'start_time' does not exist on type 'never'.
+src/pages/Timetable.tsx(43,82): error TS2339: Property 'start_time' does not exist on type 'never'.
+src/pages/Timetable.tsx(45,56): error TS2339: Property '_id' does not exist on type 'never'.
+src/pages/Timetable.tsx(46,99): error TS2339: Property 'class_id' does not exist on type 'never'.
+src/pages/Timetable.tsx(49,55): error TS2339: Property 'start_time' does not exist on type 'never'.
+src/pages/Timetable.tsx(49,75): error TS2339: Property 'end_time' does not exist on type 'never'.
+src/pages/Timetable.tsx(53,55): error TS2339: Property 'teacher_id' does not exist on type 'never'.
+src/pages/Timetable.tsx(57,63): error TS2339: Property 'day' does not exist on type 'never'.
+src/utils/api.ts(55,16): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/utils/api.ts(56,13): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/utils/api.ts(61,14): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/utils/api.ts(62,15): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/utils/api.ts(63,14): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/utils/api.ts(63,18): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/utils/api.ts(64,14): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/utils/api.ts(69,14): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/utils/api.ts(70,14): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/utils/api.ts(70,18): error TS7006: Parameter 'formData' implicitly has an 'any' type.
+src/utils/api.ts(77,13): error TS7006: Parameter 'id' implicitly has an 'any' type.
+src/utils/api.ts(77,17): error TS7006: Parameter 'formData' implicitly has an 'any' type.
+src/utils/api.ts(92,12): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/utils/api.ts(97,21): error TS7006: Parameter 'data' implicitly has an 'any' type.
+src/utils/api.ts(98,22): error TS7006: Parameter 'data' implicitly has an 'any' type.

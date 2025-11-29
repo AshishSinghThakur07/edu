@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  STUDENT
+  TEACHER
+  HR
+  ADMIN
+}
+
+model User {
+  id            String       @id @default(uuid())
+  email         String       @unique
+  password      String
+  role          Role
+  name          String
+  institution   Institution? @relation(fields: [institutionId], references: [id])
+  institutionId String?
+  
+  profile       Profile?
+  
+  // Relations
+  studentClasses Class[]      @relation("StudentClasses")
+  teacherTimetables Timetable[]
+  attendances    Attendance[]
+  submissions    Submission[]
+  applications   Application[]
+
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Institution {
+  id          String       @id @default(uuid())
+  name        String
+  email       String?
+  address     String?
+  
+  users       User[]
+  courses     Course[]
+  jobPostings JobPosting[]
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Profile {
+  id      String  @id @default(uuid())
+  user    User    @relation(fields: [userId], references: [id])
+  userId  String  @unique
+  bio     String?
+  year    Int?
+  course  String?
+  phone   String?
+}
+
+model Course {
+  id            String      @id @default(uuid())
+  title         String
+  institution   Institution @relation(fields: [institutionId], references: [id])
+  institutionId String
+  description   String?
+  
+  classes       Class[]
+}
+
+model Class {
+  id          String       @id @default(uuid())
+  name        String
+  course      Course       @relation(fields: [courseId], references: [id])
+  courseId    String
+  
+  students    User[]       @relation("StudentClasses")
+  timetables  Timetable[]
+  assignments Assignment[]
+  attendances Attendance[]
+}
+
+model Timetable {
+  id        String @id @default(uuid())
+  class     Class  @relation(fields: [classId], references: [id])
+  classId   String
+  day       String
+  startTime String
+  endTime   String
+  
+  teacher   User?  @relation(fields: [teacherId], references: [id])
+  teacherId String?
+}
+
+model Assignment {
+  id          String       @id @default(uuid())
+  class       Class        @relation(fields: [classId], references: [id])
+  classId     String
+  title       String
+  description String?
+  dueDate     DateTime?
+  
+  submissions Submission[]
+}
+
+model Submission {
+  id           String     @id @default(uuid())
+  assignment   Assignment @relation(fields: [assignmentId], references: [id])
+  assignmentId String
+  student      User       @relation(fields: [studentId], references: [id])
+  studentId    String
+  content      String?
+  fileUrl      String?
+  submittedAt  DateTime   @default(now())
+  grade        Float?
+  feedback     String?
+
+  @@unique([assignmentId, studentId])
+}
+
+model Attendance {
+  id      String   @id @default(uuid())
+  user    User     @relation(fields: [userId], references: [id])
+  userId  String
+  class   Class    @relation(fields: [classId], references: [id])
+  classId String
+  date    DateTime
+  present Boolean  @default(false)
+
+  @@unique([userId, classId, date])
+}
+
+model JobPosting {
+  id            String        @id @default(uuid())
+  institution   Institution   @relation(fields: [institutionId], references: [id])
+  institutionId String
+  title         String
+  description   String?
+  postedAt      DateTime      @default(now())
+  closingAt     DateTime?
+  
+  applications  Application[]
+}
+
+model Application {
+  id           String     @id @default(uuid())
+  jobPosting   JobPosting @relation(fields: [jobPostingId], references: [id])
+  jobPostingId String
+  candidate    User?      @relation(fields: [candidateId], references: [id])
+  candidateId  String?
+  status       String     @default("APPLIED")
+  resumeUrl    String?
+  appliedAt    DateTime   @default(now())
+}
