@@ -20,19 +20,19 @@
         },
         {
             "src": "/assets/(.*)",
-            "dest": "/client/dist/assets/$1"
+            "dest": "/dist/assets/$1"
         },
         {
             "src": "/manifest.webmanifest",
-            "dest": "/client/dist/manifest.webmanifest"
+            "dest": "/dist/manifest.webmanifest"
         },
         {
             "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|woff|woff2|ttf|eot))",
-            "dest": "/client/dist/$1"
+            "dest": "/dist/$1"
         },
         {
             "src": "/(.*)",
-            "dest": "/client/dist/index.html"
+            "dest": "/dist/index.html"
         }
     ]
 }
