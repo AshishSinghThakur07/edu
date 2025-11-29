@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import { Briefcase, MapPin, Clock, Search, Loader2, Upload, CheckCircle } from 'lucide-react';
+import { jobsAPI } from '../utils/api';
+import { Briefcase, MapPin, Clock, Search, Loader2, Upload } from 'lucide-react';
 
 const Jobs = () => {
     const [jobs, setJobs] = useState([]);
@@ -8,60 +9,46 @@ const Jobs = () => {
     const [selectedJob, setSelectedJob] = useState(null);
     const [showApplyModal, setShowApplyModal] = useState(false);
     const [resumeFile, setResumeFile] = useState(null);
+    const [coverLetter, setCoverLetter] = useState('');
 
-    // Mock user
     const user = JSON.parse(localStorage.getItem('user'));
     const isStudent = user?.role === 'STUDENT';
 
     useEffect(() => {
-        // Simulate fetching jobs
-        setTimeout(() => {
-            setJobs([
-                {
-                    _id: '1',
-                    title: 'Research Assistant - AI Lab',
-                    institution_id: { name: 'Computer Science Dept' },
-                    description: 'Looking for a student to assist with machine learning research. Prerequisites: Python, PyTorch.',
-                    location: 'Building A, Room 304',
-                    type: 'Part-time',
-                    closing_at: '2023-12-15',
-                    posted_at: '2023-11-20'
-                },
-                {
-                    _id: '2',
-                    title: 'Library Student Helper',
-                    institution_id: { name: 'Central Library' },
-                    description: 'Assist with book shelving and front desk duties. Flexible hours.',
-                    location: 'Main Library',
-                    type: 'Part-time',
-                    closing_at: '2023-12-10',
-                    posted_at: '2023-11-22'
-                },
-                {
-                    _id: '3',
-                    title: 'Campus Tour Guide',
-                    institution_id: { name: 'Admissions Office' },
-                    description: 'Lead tours for prospective students and families.',
-                    location: 'Welcome Center',
-                    type: 'Part-time',
-                    closing_at: '2023-12-20',
-                    posted_at: '2023-11-25'
-                }
-            ]);
-            setLoading(false);
-        }, 500);
+        fetchJobs();
     }, []);
+
+    const fetchJobs = async () => {
+        try {
+            const { data } = await jobsAPI.getAll();
+            setJobs(data);
+        } catch (error) {
+            console.error('Error fetching jobs:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleApply = async (e) => {
         e.preventDefault();
-        // Simulate application
-        setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        setLoading(false);
-        setShowApplyModal(false);
-        setResumeFile(null);
-        setSelectedJob(null);
-        alert('Application submitted successfully!');
+        try {
+            const formData = new FormData();
+            if (resumeFile) {
+                formData.append('resume', resumeFile);
+            }
+            formData.append('coverLetter', coverLetter);
+
+            await jobsAPI.apply(selectedJob._id, formData);
+
+            setShowApplyModal(false);
+            setResumeFile(null);
+            setCoverLetter('');
+            setSelectedJob(null);
+            alert('Application submitted successfully!');
+        } catch (error) {
+            console.error('Error applying for job:', error);
+            alert('Failed to submit application');
+        }
     };
 
     const openApplyModal = (job) => {
@@ -93,9 +80,16 @@ const Jobs = () => {
                 </div>
             </div>
 
-            {loading && !showApplyModal ? (
+            {loading ? (
                 <div className="flex justify-center py-12">
                     <Loader2 className="animate-spin text-indigo-600" size={32} />
+                </div>
+            ) : filteredJobs.length === 0 ? (
+                <div className="text-center py-12 bg-gray-50 rounded-xl">
+                    <Briefcase className="mx-auto text-gray-400 mb-3" size={48} />
+                    <p className="text-gray-500 font-medium">
+                        {searchTerm ? 'No jobs found matching your search.' : 'No job postings available.'}
+                    </p>
                 </div>
             ) : (
                 <div className="grid gap-6">
@@ -107,10 +101,14 @@ const Jobs = () => {
                                         <span className="px-2 py-1 bg-blue-50 text-blue-700 text-xs font-medium rounded-full">
                                             {job.type}
                                         </span>
-                                        <span className="text-xs text-gray-500">Posted: {job.posted_at}</span>
+                                        <span className="text-xs text-gray-500">
+                                            Posted: {new Date(job.posted_at).toLocaleDateString()}
+                                        </span>
                                     </div>
                                     <h3 className="text-xl font-bold text-gray-900 mb-1">{job.title}</h3>
-                                    <p className="text-indigo-600 font-medium text-sm mb-3">{job.institution_id.name}</p>
+                                    <p className="text-indigo-600 font-medium text-sm mb-3">
+                                        {job.institution_id?.name || 'Institution'}
+                                    </p>
                                     <p className="text-gray-600 text-sm mb-4 line-clamp-2">{job.description}</p>
 
                                     <div className="flex items-center space-x-4 text-sm text-gray-500">
@@ -120,7 +118,7 @@ const Jobs = () => {
                                         </div>
                                         <div className="flex items-center">
                                             <Clock size={16} className="mr-1" />
-                                            Closes: {job.closing_at}
+                                            Closes: {new Date(job.closing_at).toLocaleDateString()}
                                         </div>
                                     </div>
                                 </div>
@@ -142,12 +140,6 @@ const Jobs = () => {
                             </div>
                         </div>
                     ))}
-                    {filteredJobs.length === 0 && (
-                        <div className="text-center py-12 bg-gray-50 rounded-xl">
-                            <Briefcase className="mx-auto text-gray-400 mb-3" size={48} />
-                            <p className="text-gray-500 font-medium">No jobs found matching your search.</p>
-                        </div>
-                    )}
                 </div>
             )}
 
@@ -157,7 +149,7 @@ const Jobs = () => {
                     <div className="bg-white rounded-xl max-w-md w-full p-6">
                         <h2 className="text-xl font-bold text-gray-900 mb-1">Apply for Position</h2>
                         <p className="text-gray-600 mb-6 text-sm">
-                            {selectedJob?.title} at {selectedJob?.institution_id.name}
+                            {selectedJob?.title} at {selectedJob?.institution_id?.name}
                         </p>
 
                         <form onSubmit={handleApply} className="space-y-4">
@@ -182,6 +174,8 @@ const Jobs = () => {
                                     className="w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500"
                                     rows="4"
                                     placeholder="Why are you a good fit for this role?"
+                                    value={coverLetter}
+                                    onChange={(e) => setCoverLetter(e.target.value)}
                                 ></textarea>
                             </div>
 
@@ -195,10 +189,9 @@ const Jobs = () => {
                                 </button>
                                 <button
                                     type="submit"
-                                    disabled={!resumeFile || loading}
-                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center"
+                                    disabled={!resumeFile}
+                                    className="px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed"
                                 >
-                                    {loading && <Loader2 className="animate-spin mr-2" size={16} />}
                                     Submit Application
                                 </button>
                             </div>

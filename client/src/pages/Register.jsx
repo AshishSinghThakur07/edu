@@ -1,16 +1,14 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { GraduationCap, Mail, Lock, User, Building2, Loader2 } from 'lucide-react';
+import { authAPI } from '../utils/api';
+import { GraduationCap, User, Mail, Lock, Building2, Loader2 } from 'lucide-react';
 
 const Register = () => {
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         password: '',
-        role: 'STUDENT', // Default role
-        // institution_id would typically be selected or assigned. 
-        // For now, we'll handle it simply or omit if optional in schema (it's ref but not marked required in my schema code, though logic might need it)
+        role: 'STUDENT',
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
@@ -22,12 +20,7 @@ const Register = () => {
         setError('');
 
         try {
-            // Create a dummy institution if needed or handle in backend. 
-            // For this demo, we'll assume the backend handles it or we pass a dummy ID if required.
-            // Actually, my backend schema for User has institution_id as ref 'Institution'.
-            // I'll skip institution_id for now as it's not strictly 'required' in the mongoose schema definition I wrote (only type and ref defined, no required: true).
-
-            const { data } = await axios.post('/api/auth/register', formData);
+            const { data } = await authAPI.register(formData);
             localStorage.setItem('user', JSON.stringify(data));
             localStorage.setItem('token', data.token);
             navigate('/');

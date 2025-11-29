@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { assignmentsAPI } from '../utils/api';
 import { FileText, Upload, Plus, Loader2, CheckCircle } from 'lucide-react';
 
 const Assignments = () => {
@@ -8,46 +9,48 @@ const Assignments = () => {
     const [selectedAssignment, setSelectedAssignment] = useState(null);
     const [submissionFile, setSubmissionFile] = useState(null);
 
-    // Mock user
     const user = JSON.parse(localStorage.getItem('user'));
     const isStudent = user?.role === 'STUDENT';
     const isTeacher = user?.role === 'TEACHER';
 
     useEffect(() => {
-        // Simulate fetching assignments
-        setTimeout(() => {
-            setAssignments([
-                {
-                    _id: '1',
-                    title: 'Algorithm Analysis Report',
-                    description: 'Analyze the time complexity of the provided sorting algorithms.',
-                    due_date: '2023-12-01',
-                    class_id: { name: 'CS101' },
-                    status: 'pending'
-                },
-                {
-                    _id: '2',
-                    title: 'Calculus Problem Set 3',
-                    description: 'Solve problems 1-10 from Chapter 4.',
-                    due_date: '2023-11-28',
-                    class_id: { name: 'Math202' },
-                    status: 'submitted'
-                },
-            ]);
-            setLoading(false);
-        }, 500);
+        fetchAssignments();
     }, []);
+
+    const fetchAssignments = async () => {
+        try {
+            const { data } = await assignmentsAPI.getAll();
+            setAssignments(data);
+        } catch (error) {
+            console.error('Error fetching assignments:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Simulate submission
-        setAssignments(assignments.map(a =>
-            a._id === selectedAssignment._id ? { ...a, status: 'submitted' } : a
-        ));
-        setShowSubmitModal(false);
-        setSubmissionFile(null);
-        setSelectedAssignment(null);
-        alert('Assignment submitted successfully!');
+        try {
+            const formData = new FormData();
+            if (submissionFile) {
+                formData.append('file', submissionFile);
+            }
+
+            await assignmentsAPI.submit(selectedAssignment._id, formData);
+
+            // Update local state
+            setAssignments(assignments.map(a =>
+                a._id === selectedAssignment._id ? { ...a, status: 'submitted' } : a
+            ));
+
+            setShowSubmitModal(false);
+            setSubmissionFile(null);
+            setSelectedAssignment(null);
+            alert('Assignment submitted successfully!');
+        } catch (error) {
+            console.error('Error submitting assignment:', error);
+            alert('Failed to submit assignment');
+        }
     };
 
     const openSubmitModal = (assignment) => {
@@ -74,6 +77,11 @@ const Assignments = () => {
                 <div className="flex justify-center py-12">
                     <Loader2 className="animate-spin text-indigo-600" size={32} />
                 </div>
+            ) : assignments.length === 0 ? (
+                <div className="text-center py-12 bg-gray-50 rounded-xl">
+                    <FileText className="mx-auto text-gray-400 mb-3" size={48} />
+                    <p className="text-gray-500 font-medium">No assignments yet.</p>
+                </div>
             ) : (
                 <div className="grid gap-6">
                     {assignments.map((assignment) => (
@@ -81,9 +89,11 @@ const Assignments = () => {
                             <div className="flex-1">
                                 <div className="flex items-center space-x-3 mb-2">
                                     <span className="px-2 py-1 bg-indigo-50 text-indigo-700 text-xs font-medium rounded-full">
-                                        {assignment.class_id.name}
+                                        {assignment.class_id?.name || 'Class'}
                                     </span>
-                                    <span className="text-sm text-gray-500">Due: {assignment.due_date}</span>
+                                    <span className="text-sm text-gray-500">
+                                        Due: {new Date(assignment.due_date).toLocaleDateString()}
+                                    </span>
                                 </div>
                                 <h3 className="text-lg font-bold text-gray-900 mb-2">{assignment.title}</h3>
                                 <p className="text-gray-600 text-sm">{assignment.description}</p>
@@ -124,7 +134,11 @@ const Assignments = () => {
                             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center hover:bg-gray-50 transition-colors cursor-pointer">
                                 <Upload className="mx-auto text-gray-400 mb-2" size={32} />
                                 <p className="text-sm text-gray-500">Click to upload or drag and drop</p>
-                                <input type="file" className="hidden" onChange={(e) => setSubmissionFile(e.target.files[0])} />
+                                <input
+                                    type="file"
+                                    className="hidden"
+                                    onChange={(e) => setSubmissionFile(e.target.files[0])}
+                                />
                             </div>
                             {submissionFile && (
                                 <div className="text-sm text-indigo-600 flex items-center">

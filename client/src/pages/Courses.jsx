@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import { coursesAPI } from '../utils/api';
 import { BookOpen, Plus, Loader2, Search } from 'lucide-react';
 
 const Courses = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [showAddModal, setShowAddModal] = useState(false);
-    const [newCourse, setNewCourse] = useState({ title: '', description: '', institution_id: '654321' }); // Mock ID for now
+    const [newCourse, setNewCourse] = useState({ title: '', description: '' });
     const [searchTerm, setSearchTerm] = useState('');
+    const [error, setError] = useState('');
 
     useEffect(() => {
         fetchCourses();
@@ -15,30 +16,29 @@ const Courses = () => {
 
     const fetchCourses = async () => {
         try {
-            // Mock data for now if backend is empty or not fully connected with auth
-            // const { data } = await axios.get('http://localhost:5000/api/academic/courses');
-            // setCourses(data);
-
-            // Simulating data for UI dev
-            setTimeout(() => {
-                setCourses([
-                    { _id: '1', title: 'Computer Science 101', description: 'Introduction to CS', institution_id: { name: 'Tech University' } },
-                    { _id: '2', title: 'Mathematics 202', description: 'Advanced Calculus', institution_id: { name: 'Tech University' } },
-                ]);
-                setLoading(false);
-            }, 500);
+            setLoading(true);
+            const { data } = await coursesAPI.getAll();
+            setCourses(data);
         } catch (error) {
-            console.error(error);
+            console.error('Error fetching courses:', error);
+            setError('Failed to load courses');
+            setCourses([]);
+        } finally {
             setLoading(false);
         }
     };
 
     const handleCreateCourse = async (e) => {
         e.preventDefault();
-        // In real app: await axios.post('http://localhost:5000/api/academic/courses', newCourse);
-        setCourses([...courses, { ...newCourse, _id: Date.now().toString(), institution_id: { name: 'Tech University' } }]);
-        setShowAddModal(false);
-        setNewCourse({ title: '', description: '', institution_id: '654321' });
+        try {
+            const { data } = await coursesAPI.create(newCourse);
+            setCourses([...courses, data]);
+            setShowAddModal(false);
+            setNewCourse({ title: '', description: '' });
+        } catch (error) {
+            console.error('Error creating course:', error);
+            alert('Failed to create course');
+        }
     };
 
     const filteredCourses = courses.filter(course =>
@@ -78,6 +78,20 @@ const Courses = () => {
                 <div className="flex justify-center py-12">
                     <Loader2 className="animate-spin text-indigo-600" size={32} />
                 </div>
+            ) : error ? (
+                <div className="text-center py-12 bg-red-50 rounded-xl">
+                    <p className="text-red-600">{error}</p>
+                    <button onClick={fetchCourses} className="mt-4 text-indigo-600 hover:text-indigo-800">
+                        Try Again
+                    </button>
+                </div>
+            ) : filteredCourses.length === 0 ? (
+                <div className="text-center py-12 bg-gray-50 rounded-xl">
+                    <BookOpen className="mx-auto text-gray-400 mb-3" size={48} />
+                    <p className="text-gray-500 font-medium">
+                        {searchTerm ? 'No courses found matching your search.' : 'No courses yet. Create your first course!'}
+                    </p>
+                </div>
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {filteredCourses.map((course) => (
@@ -93,7 +107,7 @@ const Courses = () => {
                             <h3 className="text-lg font-bold text-gray-900 mb-2">{course.title}</h3>
                             <p className="text-gray-500 text-sm line-clamp-2">{course.description}</p>
                             <div className="mt-4 pt-4 border-t flex justify-between items-center text-sm">
-                                <span className="text-gray-500">3 Classes</span>
+                                <span className="text-gray-500">Course</span>
                                 <button className="text-indigo-600 font-medium hover:text-indigo-800">View Details</button>
                             </div>
                         </div>

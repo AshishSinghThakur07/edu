@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { authAPI } from '../utils/api';
 import { GraduationCap, Mail, Lock, Loader2 } from 'lucide-react';
 
 const Login = () => {
@@ -15,7 +15,7 @@ const Login = () => {
         setError('');
 
         try {
-            const { data } = await axios.post('/api/auth/login', formData);
+            const { data } = await authAPI.login(formData);
             localStorage.setItem('user', JSON.stringify(data));
             localStorage.setItem('token', data.token);
             navigate('/');

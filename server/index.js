@@ -27,6 +27,7 @@ app.use('/api/academic', require('./routes/academicRoutes'));
 app.use('/api/schedule', require('./routes/scheduleRoutes'));
 app.use('/api/assignments', require('./routes/assignmentRoutes'));
 app.use('/api/jobs', require('./routes/jobRoutes'));
+app.use('/api/dashboard', require('./routes/dashboardRoutes'));
 
 app.get('/', (req, res) => {
     res.send('API is running...');
