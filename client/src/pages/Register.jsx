@@ -27,7 +27,7 @@ const Register = () => {
             // Actually, my backend schema for User has institution_id as ref 'Institution'.
             // I'll skip institution_id for now as it's not strictly 'required' in the mongoose schema definition I wrote (only type and ref defined, no required: true).
 
-            const { data } = await axios.post('http://localhost:5000/api/auth/register', formData);
+            const { data } = await axios.post('/api/auth/register', formData);
             localStorage.setItem('user', JSON.stringify(data));
             localStorage.setItem('token', data.token);
             navigate('/');
