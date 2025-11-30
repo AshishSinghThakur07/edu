@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Create axios instance with base configuration
 const api = axios.create({
-    baseURL: '/api', // Relative URL works for both local and production
+    baseURL: import.meta.env.VITE_API_URL || '/api', // Use env var for production, proxy for local
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',

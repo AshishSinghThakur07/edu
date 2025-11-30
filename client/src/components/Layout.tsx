@@ -54,7 +54,7 @@ const Layout = ({ children }: LayoutProps) => {
                     <div className="p-6 flex items-center justify-between border-b">
                         <div className="flex items-center space-x-2 text-indigo-600">
                             <GraduationCap size={32} />
-                            <span className="text-xl font-bold">EduManage</span>
+                            <span className="text-xl font-bold">Academere</span>
                         </div>
                         <button
                             onClick={() => setIsSidebarOpen(false)}
